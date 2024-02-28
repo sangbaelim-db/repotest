@@ -6,4 +6,4 @@ import pandas as pd
 df = pd.read_csv(airbnb_path)
 df.head()
 
-display(df)
+print(df)
