@@ -850,8 +850,10 @@
                   "scale": {
                     "mappings": [
                       {
-                        "color": "#70819A",
-                        "value": "5-LOW"
+                        "value": "5-LOW",
+                        "color": {
+                          "themeColorType": "fontColor"
+                        }
                       },
                       {
                         "color": "#88BFE0",
@@ -873,6 +875,9 @@
                     "type": "categorical"
                   },
                   "displayName": "Priority"
+                },
+                "label": {
+                  "show": false
                 }
               },
               "frame": {
