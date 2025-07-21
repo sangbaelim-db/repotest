@@ -1,0 +1,200 @@
+{
+  "datasets": [
+    {
+      "name": "75bcc3d7",
+      "displayName": "sales",
+      "queryLines": [
+        "SELECT * FROM dwhol.v01.sales"
+      ]
+    },
+    {
+      "name": "9373acf6",
+      "displayName": "customers",
+      "queryLines": [
+        "SELECT * FROM dwhol.v01.customers"
+      ]
+    },
+    {
+      "name": "7e9b56fd",
+      "displayName": "Count Total Sales",
+      "queryLines": [
+        "SELECT sum(total_price) AS Total_Sales, 3000000 AS Sales_Goal FROM dwhol.v01.sales;"
+      ]
+    },
+    {
+      "name": "c3a8bea3",
+      "displayName": "Three Month Sales",
+      "queryLines": [
+        "SELECT customer_name, \n",
+        "       total_price AS Total_Sales, \n",
+        "       date_format(order_date, \"MM\") AS Month, \n",
+        "       product_category \n",
+        "FROM dwhol.v01.sales \n",
+        "WHERE order_date >= to_date('2019-08-01')\n",
+        "AND order_date <=  to_date('2019-10-31');\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "1e824742",
+      "displayName": "메인페이지",
+      "layout": [
+        {
+          "widget": {
+            "name": "42bc683e",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "7e9b56fd",
+                  "fields": [
+                    {
+                      "name": "Sales_Goal",
+                      "expression": "`Sales_Goal`"
+                    },
+                    {
+                      "name": "Total_Sales",
+                      "expression": "`Total_Sales`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "Total_Sales",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "style": {
+                    "rules": [
+                      {
+                        "condition": {
+                          "operator": "<="
+                        },
+                        "color": {
+                          "themeColorType": "visualizationColors",
+                          "position": 4
+                        },
+                        "bold": true,
+                        "italic": true
+                      }
+                    ]
+                  },
+                  "displayName": "Total_Sales"
+                },
+                "target": {
+                  "fieldName": "Sales_Goal",
+                  "displayName": "Sales_Goal"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "5bee63de",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "c3a8bea3",
+                  "fields": [
+                    {
+                      "name": "Month",
+                      "expression": "`Month`"
+                    },
+                    {
+                      "name": "sum(Total_Sales)",
+                      "expression": "SUM(`Total_Sales`)"
+                    },
+                    {
+                      "name": "count(Total_Sales)",
+                      "expression": "COUNT(`Total_Sales`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "combo",
+              "encodings": {
+                "x": {
+                  "fieldName": "Month",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "primary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(Total_Sales)",
+                        "displayName": "Sum of Total_Sales"
+                      }
+                    ],
+                    "scale": {
+                      "type": "quantitative"
+                    },
+                    "format": {
+                      "type": "number-currency",
+                      "currencyCode": "USD",
+                      "abbreviation": "compact",
+                      "decimalPlaces": {
+                        "type": "max",
+                        "places": 2
+                      }
+                    }
+                  },
+                  "secondary": {
+                    "fields": [
+                      {
+                        "fieldName": "count(Total_Sales)",
+                        "displayName": "Count of Total_Sales"
+                      }
+                    ],
+                    "scale": {
+                      "type": "quantitative"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    }
+  }
+}
