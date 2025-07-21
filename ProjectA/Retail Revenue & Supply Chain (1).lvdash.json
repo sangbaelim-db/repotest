@@ -825,9 +825,27 @@
               }
             ],
             "spec": {
+              "version": 3,
+              "widgetType": "line",
               "encodings": {
+                "x": {
+                  "fieldName": "daily(Date)",
+                  "axis": {
+                    "title": "Date"
+                  },
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Date"
+                },
+                "y": {
+                  "fieldName": "sum(Total Price)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of Total Price"
+                },
                 "color": {
-                  "displayName": "Priority",
                   "fieldName": "Priority",
                   "scale": {
                     "mappings": [
@@ -853,29 +871,13 @@
                       }
                     ],
                     "type": "categorical"
-                  }
-                },
-                "x": {
-                  "axis": {
-                    "title": "Date"
                   },
-                  "displayName": "Date",
-                  "fieldName": "daily(Date)",
-                  "scale": {
-                    "type": "temporal"
-                  }
-                },
-                "y": {
-                  "displayName": "Sum of Total Price",
-                  "fieldName": "sum(Total Price)",
-                  "scale": {
-                    "type": "quantitative"
-                  }
+                  "displayName": "Priority"
                 }
               },
               "frame": {
                 "showTitle": true,
-                "title": "Revenue by Order Priority"
+                "title": "Revenue by Order Priority 변경 테스트"
               },
               "mark": {
                 "colors": [
@@ -889,9 +891,7 @@
                   "#919191",
                   "#BF7080"
                 ]
-              },
-              "version": 3,
-              "widgetType": "line"
+              }
             }
           },
           "position": {
