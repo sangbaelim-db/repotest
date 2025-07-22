@@ -150,6 +150,40 @@
         "LIMIT\n",
         "  400"
       ]
+    },
+    {
+      "name": "edf77549",
+      "displayName": "Revenue_dow Trends",
+      "queryLines": [
+        "SELECT\n",
+        "  o_orderdate,\n",
+        "  cast(dayofweek(o_orderdate) as string) || date_format(o_orderdate, 'E') AS Dowshort,\n",
+        "  weekofyear(o_orderdate) AS week_of_year,\n",
+        "  n_name AS nation,\n",
+        "  sum(\n",
+        "    l_extendedprice * (1 - l_discount)\n",
+        "    * (((length(n_name)) / 100) + (year(o_orderdate) - 1993) / 100)\n",
+        "  ) AS revenue\n",
+        "FROM\n",
+        "  `samples`.`tpch`.`customer`,\n",
+        "  `samples`.`tpch`.`orders`,\n",
+        "  `samples`.`tpch`.`lineitem`,\n",
+        "  `samples`.`tpch`.`nation`\n",
+        "WHERE\n",
+        "  c_custkey = o_custkey\n",
+        "  AND l_orderkey = o_orderkey\n",
+        "  AND c_nationkey = n_nationkey\n",
+        "  AND n_name in (\n",
+        "    'ARGENTINA', 'UNITED KINGDOM', 'FRANCE', 'BRAZIL', 'CHINA', 'UNITED STATES', 'JAPAN', 'JORDAN'\n",
+        "  )\n",
+        "  and o_orderdate between '1992-01-05' and '1992-01-18'\n",
+        "GROUP BY\n",
+        "  o_orderdate,\n",
+        "  nation\n",
+        "ORDER BY\n",
+        "  nation ASC,\n",
+        "  o_orderdate ASC"
+      ]
     }
   ],
   "pages": [
@@ -196,7 +230,7 @@
             "x": 1,
             "y": 2,
             "width": 1,
-            "height": 2
+            "height": 5
           }
         },
         {
@@ -238,7 +272,7 @@
             "x": 0,
             "y": 2,
             "width": 1,
-            "height": 2
+            "height": 5
           }
         },
         {
@@ -317,7 +351,7 @@
           },
           "position": {
             "x": 0,
-            "y": 12,
+            "y": 21,
             "width": 2,
             "height": 6
           }
@@ -453,7 +487,7 @@
           },
           "position": {
             "x": 2,
-            "y": 12,
+            "y": 18,
             "width": 4,
             "height": 6
           }
@@ -580,7 +614,7 @@
           },
           "position": {
             "x": 0,
-            "y": 4,
+            "y": 13,
             "width": 2,
             "height": 8
           }
@@ -793,7 +827,7 @@
           },
           "position": {
             "x": 2,
-            "y": 7,
+            "y": 13,
             "width": 4,
             "height": 5
           }
@@ -903,6 +937,78 @@
             "x": 2,
             "y": 1,
             "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "6106da97",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "edf77549",
+                  "fields": [
+                    {
+                      "name": "week_of_year",
+                      "expression": "`week_of_year`"
+                    },
+                    {
+                      "name": "Dowshort",
+                      "expression": "`Dowshort`"
+                    },
+                    {
+                      "name": "sum(revenue)",
+                      "expression": "SUM(`revenue`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`week_of_year` IN (2, 3)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "Dowshort",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Dowshort"
+                },
+                "y": {
+                  "fieldName": "sum(revenue)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of revenue"
+                },
+                "color": {
+                  "fieldName": "week_of_year",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": 2,
+                        "color": "#FB4105"
+                      }
+                    ]
+                  },
+                  "displayName": "week_of_year"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 6,
             "height": 6
           }
         }
